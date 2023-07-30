@@ -66,7 +66,19 @@ def check_4() -> bool:
         print(message + 'failed')
         return False
 
+# 5. The current stock price is trading above the 50-day moving average.
+def check_5() -> bool:
+    message = '#5 '
+    if curr_price > curr_ma_50:
+        print(message + 'passed')
+        return True
+    else:
+        print(message + 'failed')
+        return False
+
+
 check_1()
 check_2()
 check_3()
 check_4()
+check_5()
