@@ -89,6 +89,16 @@ def check_6() -> bool:
     else:
         print(message + 'failed')
         return False
+    
+# 7. The current stock price is within at least 25 percent of its 52-week high (the closer to a new high the better).
+def check_7() -> bool:
+    message = '#7 '
+    if curr_price > 0.25 * hi_52_week:
+        print(message + 'passed')
+        return True
+    else:
+        print(message + 'failed')
+        return False
 
 check_1()
 check_2()
@@ -96,3 +106,4 @@ check_3()
 check_4()
 check_5()
 check_6()
+check_7()
