@@ -1,20 +1,24 @@
 import yfinance as yf
+import numpy as np
 
 # input ticker
 ticker = input('which ticker do you want to search?: ')
 print(f'input ticker is {ticker}')
-
-# 1. The current stock price is above both the 150-day (30-week) and the 200-day (40-week) moving average price lines.
 stock = yf.Ticker(ticker)
-close_price_history_200 = stock.history('200d')['Close']
 
-ma_150 = close_price_history_200.rolling(150).mean()
-ma_200 = close_price_history_200.rolling(200).mean()
+# closing price data for one year
+close_price_history_200 = stock.history(period='1y')['Close']
 
+# moving averages
+ma_150 = close_price_history_200.rolling(window=150).mean()
+ma_200 = close_price_history_200.rolling(window=200).mean()
+
+# current values
 curr_price = close_price_history_200[-1]
 curr_ma_150 = ma_150[-1]
 curr_ma_200 = ma_200[-1]
 
+# 1. The current stock price is above both the 150-day (30-week) and the 200-day (40-week) moving average price lines.
 def check_1() -> bool:
     message = '#1 '
     if curr_price > curr_ma_150 and curr_price > curr_ma_200:
@@ -33,3 +37,23 @@ def check_2() -> bool:
     else:
         print(message + 'failed')
         return False
+    
+# 3. The 200-day moving average line is trending up for at least 1 month (preferably 4–5 months minimum in most cases).
+def check_3() -> bool:
+    message = '#3 '
+    ma_200_dropna = ma_200.dropna()
+    if len(ma_200_dropna) < 21:
+        print(message + 'not enough data to check')
+        return False
+    polyfit = np.polyfit(range(20), ma_200_dropna[-20:], 1)
+    slope = polyfit[0]
+    if slope > 0:
+        print(message + 'passed')
+        return True
+    else:
+        print(message + 'failed')
+        return False
+
+check_1()
+check_2()
+check_3()
