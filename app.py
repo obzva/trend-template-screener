@@ -27,7 +27,7 @@ def check_1() -> bool:
 # 2. The 150-day moving average is above the 200-day moving average.
 def check_2() -> bool:
     message = '#2 '
-    if curr_ma_150 and curr_ma_200:
+    if curr_ma_150 > curr_ma_200:
         print(message + 'passed')
         return True
     else:
