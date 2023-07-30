@@ -20,6 +20,10 @@ curr_ma_50 = ma_50[-1]
 curr_ma_150 = ma_150[-1]
 curr_ma_200 = ma_200[-1]
 
+# 52-week(1-year) hi/lo
+hi_52_week = close_price_history.max()
+lo_52_week = close_price_history.min()
+
 # 1. The current stock price is above both the 150-day (30-week) and the 200-day (40-week) moving average price lines.
 def check_1() -> bool:
     message = '#1 '
@@ -76,9 +80,19 @@ def check_5() -> bool:
         print(message + 'failed')
         return False
 
+# 6. The current stock price is at least 30 percent above its 52-week low. (Many of the best selections will be 100 percent, 300 percent, or greater above their 52-week low before they emerge from a solid consolidation period and mount a large scale advance.)
+def check_6() -> bool:
+    message = '#6 '
+    if curr_price > 1.3 * lo_52_week:
+        print(message + 'passed')
+        return True
+    else:
+        print(message + 'failed')
+        return False
 
 check_1()
 check_2()
 check_3()
 check_4()
 check_5()
+check_6()
