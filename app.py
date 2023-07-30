@@ -7,14 +7,16 @@ print(f'input ticker is {ticker}')
 stock = yf.Ticker(ticker)
 
 # closing price data for one year
-close_price_history_200 = stock.history(period='1y')['Close']
+close_price_history = stock.history(period='1y')['Close']
 
 # moving averages
-ma_150 = close_price_history_200.rolling(window=150).mean()
-ma_200 = close_price_history_200.rolling(window=200).mean()
+ma_50 = close_price_history.rolling(window=50).mean()
+ma_150 = close_price_history.rolling(window=150).mean()
+ma_200 = close_price_history.rolling(window=200).mean()
 
 # current values
-curr_price = close_price_history_200[-1]
+curr_price = close_price_history[-1]
+curr_ma_50 = ma_50[-1]
 curr_ma_150 = ma_150[-1]
 curr_ma_200 = ma_200[-1]
 
@@ -53,7 +55,18 @@ def check_3() -> bool:
     else:
         print(message + 'failed')
         return False
+    
+# 4. The 50-day (10-week) moving average is above both the 150-day and 200-day moving averages.
+def check_4() -> bool:
+    message = '#4 '
+    if curr_ma_50 > curr_ma_150 and curr_ma_50 > curr_ma_200:
+        print(message + 'passed')
+        return True
+    else:
+        print(message + 'failed')
+        return False
 
 check_1()
 check_2()
 check_3()
+check_4()
